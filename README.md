@@ -43,3 +43,4 @@ ChillAppz is a user-friendly web application, so there is no need to install any
 - Timely notifications to retrieve your drink from the freezer.
 - Prevents damage to drinks and the mess of exploded bottles.
 - Ensures your drinks are at the ideal temperature for consumption.
+- Keep track of your drink inventory. 
