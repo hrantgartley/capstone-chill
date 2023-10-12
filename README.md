@@ -14,7 +14,7 @@ ChillAppz is a simple and practical application designed to help you safely stor
 
 ## User Story
 
-As a user, I want to have a convenient way to determine how long I can safely leave a drink in the freezer, ensuring that it reaches the perfect level of chill without any risk of damage.
+As one with thirst, I want to have a timer to make my drink cold, ensuring that it reaches the perfect chill level without exploding.
 
 ## Getting Started
 
@@ -43,4 +43,3 @@ ChillAppz is a user-friendly web application, so there is no need to install any
 - Timely notifications to retrieve your drink from the freezer.
 - Prevents damage to drinks and the mess of exploded bottles.
 - Ensures your drinks are at the ideal temperature for consumption.
-- Keep track of your drink inventory. 
