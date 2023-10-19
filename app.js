@@ -10,6 +10,9 @@ const uri = process.env.MONGO_URI;
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Provide static directory for frontend
+app.use(express.static("static"));
+
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -26,7 +29,7 @@ async function run() {
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!",
+      "Pinged your deployment. You successfully connected to MongoDB!"
     );
   } finally {
     // Ensures that the client will close when you finish/error
@@ -39,7 +42,7 @@ async function cxnDB() {
   try {
     await client
       .connect()
-      .then(client.db("quebec-database").collection("icecream-flavors"));
+      .then(client.db("quebec-database").collection("drinks"));
   } catch (e) {
     console.log(e);
   } finally {
@@ -51,120 +54,98 @@ app.get("/", async (req, res) => {
   client.connect;
   let mongoResult = await client
     .db("quebec-database")
-    .collection("icecream-flavors")
+    .collection("drinks")
     .find()
     .toArray();
   // console.log("get/: ", result);
   console.log(mongoResult);
-  //'res.send("here for a second: " + result[0].name)
+  // ('res.send("here for a second: " + result[0].name)');
   res.render("index", {
-    profileData: mongoResult,
+    drinkOptions: mongoResult,
   });
 });
 
-app.post("/updateProfile", async (req, res) => {
+app.post("/addCustomDrink", async (req, res) => {
   try {
     //get the new dev name
-    console.log("body: ", req.body);
-    console.log("user Name: ", req.body.devName);
+    // console.log("body: ", req.body);
+    // console.log("user Name: ", req.body.devName);
 
-    client.connect;
-    const collection = client
-      .db("quebec-database")
-      .collection("icecream-flavors");
+    const customDrinkName = req.body.customDrinkName;
+    if (!customDrinkName) {
+      return res.status(400).send("Drink name is required.");
+    }
 
-    // put it into mongo
-    let result = await collection
-      .findOneAndUpdate(
-        { _id: new ObjectId(req.body.devId) },
-        { $set: { name: req.body.devName } },
-      )
-      .then((result) => {
-        console.log(result);
-        res.redirect("/");
-      })
-      .catch((error) => console.error(error));
-  } finally {
-    //client.close()
+    const collection = client.db("quebec-database").collection("drinks");
+
+    // Insert the custom drink into the database
+    await collection.insertOne({ drinkName: customDrinkName, freezingTime: 0 });
+    res.redirect("/");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("An error occurred while adding the custom drink.");
   }
 });
 
-app.post("/insertProfile", async (req, res) => {
-  try {
-    //get the new dev name
-    console.log("body: ", req.body);
-    console.log("user Name: ", req.body.devName);
+// app.post("/updateProfile", async (req, res) => {
+//   try {
+//     //get the new dev name
+//     console.log("body: ", req.body);
+//     console.log("user Name: ", req.body.devName);
 
-    client.connect;
-    const collection = client
-      .db("quebec-database")
-      .collection("icecream-flavors");
+//     client.connect;
+//     const collection = client.db("quebec-database").collection("drinks");
 
-    // put it into mongo
-    let result = await collection
-      .insertOne({ flavor: req.body.newDevName })
-      .then((result) => {
-        console.log(result);
-        res.redirect("/");
-      })
-      .catch((error) => console.error(error));
-  } finally {
-    //client.close()
-  }
-});
+//     // put it into mongo
+//     let result = await collection
+//       .findOneAndUpdate(
+//         { _id: new ObjectId(req.body.devId) },
+//         { $set: { name: req.body.devName } }
+//       )
+//       .then((result) => {
+//         console.log(result);
+//         res.redirect("/");
+//       })
+//       .catch((error) => console.error(error));
+//   } finally {
+//     //client.close()
+//   }
+// });
 
-app.post("/deleteProfile", async (req, res) => {
-  try {
-    //get the new dev name
-    console.log("body: ", req.body);
-    console.log("user Name: ", req.body.devName);
+// app.post("/deleteProfile", async (req, res) => {
+//   try {
+//     //get the new dev name
+//     console.log("body: ", req.body);
+//     console.log("user Name: ", req.body.devName);
 
-    client.connect;
-    const collection = client
-      .db("quebec-database")
-      .collection("icecream-flavors");
+//     client.connect;
+//     const collection = client.db("quebec-database").collection("drinks");
 
-    // put it into mongo
-    let result = await collection
-      .findOneAndDelete({ _id: new ObjectId(req.body.devId) })
-      .then((result) => {
-        console.log(result);
-        res.redirect("/");
-      })
-      .catch((error) => console.error(error));
-  } finally {
-    //client.close()
-  }
-});
+//     // put it into mongo
+//     let result = await collection
+//       .findOneAndDelete({ _id: new ObjectId(req.body.devId) })
+//       .then((result) => {
+//         console.log(result);
+//         res.redirect("/");
+//       })
+//       .catch((error) => console.error(error));
+//   } finally {
+//     //client.close()
+//   }
+// });
 
-let myVariableServer = "soft coded server data";
+// app.post("/postClientData", function (req, res) {
+//   console.log("body: ", req.body);
+//   console.log("user Name: ", req.body.userName);
+//   //  console.log("params: ", req.params['userName']);
 
-app.get("/barry", function (req, res) {
-  res.render("index", {
-    myVariableClient: myVariableServer,
-  });
-});
+//   // myVariableServer = req.body.userName;
 
-app.post("/postClientData", function (req, res) {
-  console.log("body: ", req.body);
-  console.log("user Name: ", req.body.userName);
-  //  console.log("params: ", req.params['userName']);
+//   res.render("index", {
+//     myVariableClient: req.body.userName,
+//   });
+// });
 
-  // myVariableServer = req.body.userName;
-
-  res.render("index", {
-    myVariableClient: req.body.userName,
-  });
-});
-
-// app.get('/', function (req, res) {
-//   res.send('<h1>Hello World From Express & a PaaS/Render</h1>')
-// })
-
-// app.get('/whatever', function (req, res) {
-//   res.sendFile(__dirname + '/index.html');
-// })
-
-// app.listen(3000)
-
-app.listen(port, () => console.log(`Server is running...on ${port}`));
+app.listen(port, () =>
+  console.log(`Server is running...on http://localhost:${port}`)
+);
