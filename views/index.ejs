@@ -1,44 +1,179 @@
-<%- include('partials/html-head') %>
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+  <meta charset="UTF-8" />
+  <title>ChillAppz - Freezer Drink Timer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
 
 <body class="container-fluid">
-
-
-<div class="row">
-  <div class="col-md-6">
-    <h1>Update Ice Cream Flavor</h1>
-
-    <%= console.log(profileData) %>
-    
-    <% for (var i=0; i< profileData.length; i++ ) { %>
-      <form method="POST">  
-        <input type="hidden" id="devId" name="devId" value="<%= profileData[i]._id %>"></input>
-        <input type="text" id="devName" name="devName" value="<%= profileData[i].name %>"></input>
-        
-        <button class="btn btn-primary" type="submit" formaction="/updateProfile">Update Flavor</button>
-        <button class="btn btn-warning" type="submit" formaction="/deleteProfile">Delete Flavor </button>
-      
+  <div class="row">
+    <div class="col-md-12">
+      <h1>ChillAppz - Freezer Drink Timer</h1>
+      <h2>Are you thirsty? Select a Drink</h2>
+      <form action="/selectDrink" method="POST">
+        <select id="selectedDrink" name="selectedDrink">
+          <option value="select">Select a Drink</option>
+          <% for (let i=0; i < drinkOptions.length; i++) { %>
+            <option value="<%= drinkOptions[i].drinkName %>">
+              <%= drinkOptions[i].drinkName %>
+            </option>
+            <% } %>
+              <option value="Custom">Custom</option>
+        </select>
+        <button type="submit">Select Drink</button>
       </form>
-      <br/>
-      <% } %> 
+    </div>
+
+    <div class="col-md-12">
+      <h2>Add Your Custom Drink</h2>
+      <form action="/addCustomDrink" method="POST">
+        <input type="text" id="customDrinkName" name="customDrinkName" placeholder="Enter the drink name" />
+        <button type="submit">Add Custom Drink</button>
+      </form>
+    </div>
+
+    <div class="col-md-12">
+      <h2>Set Freezing Time</h2>
+      <form action="/setFreezingTime" method="POST">
+        <input type="text" id="freezingTime" name="freezingTime" placeholder="Enter freezing time (minutes)" />
+        <button type="submit">Set Freezing Time</button>
+      </form>
+    </div>
+
+    <div class="col-md-12">
+      <h2>Set Timer</h2>
+      <form id="timerForm">
+        <input type="number" id="timerInput" placeholder="Enter time (minutes)" />
+        <button type="button" id="startTimer">Start Timer</button>
+        <button type="button" id="stopTimer">Stop Timer</button>
+      </form>
+      <div id="timerDisplay"></div>
+    </div>
+    <div class="col-md-12">
+      <div id="separateTimerDisplay">0s</div>
+    </div>
+
+
+
+    <!-- <div class="col-md-12">
+        <h1>Update Ice Cream Flavor</h1>
+        <ul>
+          <% for (var i=0; i< drinkOptions.length; i++ ) { %>
+          <li>
+            <form method="POST">
+              <input
+                type="hidden"
+                id="devId"
+                name="devId"
+                value="<%= drinkOptions[i]._id %>"
+              />
+              <input
+                type="text"
+                id="devName"
+                name="devName"
+                value="<%= drinkOptions[i].name %>"
+              />
+              <button type="submit" formaction="/updateProfile">
+                Update Flavor
+              </button>
+              <button type="submit" formaction="/deleteProfile">
+                Delete Flavor
+              </button>
+            </form>
+          </li>
+          <% } %>
+        </ul>
+      </div>
+
+      <div class="col-md-12">
+        <h2>New flavor here</h2>
+        <form action="/insertProfile" method="POST">
+          <input
+            type="text"
+            id="newDevName"
+            name="newDevName"
+            placeholder="New flavor goes here"
+          />
+          <button type="submit">Insert New Flavor</button>
+        </form>
+      </div> -->
   </div>
-
-
-  <div class="col-md-6">
-
-  <h2>New flavor here</h2>
-
-    <form action="/insertProfile" method="POST">
-                
-      <input type="text" id="newDevName" name="newDevName" placeholder="new dev go here"></input>
-
-      <button class="btn btn-primary" type="submit">Insert New Flavor</button>
-
-    </form>
-
-  </div>
-</div>
-
-
 </body>
+
 </html>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const timerForm = document.getElementById("timerForm");
+    const timerInput = document.getElementById("timerInput");
+    const startTimerButton = document.getElementById("startTimer");
+    const timerDisplay = document.getElementById("timerDisplay");
+    const stopTimerButton = document.getElementById("stopTimer");
+    const separateTimerDisplay = document.getElementById("separateTimerDisplay");
+
+    let timerInterval;
+    let separateTimerInterval;
+    let remainingTime = 0;
+    let isCountingDown = false;
+    let isSecondaryTimerRunning = false;
+
+    startTimerButton.addEventListener("click", function () {
+      const timeInMinutes = parseInt(timerInput.value);
+
+      if (!isNaN(timeInMinutes) && timeInMinutes > 0) {
+        remainingTime = timeInMinutes * 60;
+        clearInterval(timerInterval);
+        isCountingDown = true;
+
+        // Reset the secondary timer immediately
+        separateTimerDisplay.innerHTML = "0s";
+        isSecondaryTimerRunning = false;
+
+        // Update the timer every second
+        timerInterval = setInterval(updateTimer, 1000);
+        updateTimer();
+      }
+    });
+
+    stopTimerButton.addEventListener("click", function () {
+      clearInterval(timerInterval);
+      isCountingDown = false;
+
+      if (isSecondaryTimerRunning) {
+        clearInterval(separateTimerInterval);
+        isSecondaryTimerRunning = false;
+      }
+    });
+
+    function updateTimer() {
+      if (remainingTime <= 0) {
+        if (isCountingDown) {
+          // Timer reached 0, start counting into negatives
+          timerDisplay.innerHTML = "Time's up!";
+          let timeSinceZero = 0;
+
+          separateTimerDisplay.innerHTML = "0s"; // Reset the secondary timer immediately
+          isSecondaryTimerRunning = false;
+
+          separateTimerInterval = setInterval(() => {
+            separateTimerDisplay.innerHTML = `-${timeSinceZero}s`;
+            timeSinceZero++;
+          }, 1000);
+
+          isSecondaryTimerRunning = true;
+          clearInterval(timerInterval);
+        }
+      } else {
+        const seconds = Math.abs(remainingTime);
+        timerDisplay.innerHTML = `${remainingTime < 0 ? "-" : ""}${seconds}s`;
+        remainingTime--;
+      }
+    }
+  });
+
+
+</script>
