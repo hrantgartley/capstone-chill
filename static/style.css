@@ -47,9 +47,28 @@ button {
   cursor: pointer;
   border-radius: 4px;
   font-weight: bold;
+  transition: transform 0.1s, box-shadow 0.1s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+button:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
 }
 
-#timerDisplay {
+button[disabled] {
+  background-color: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+#startButton,
+#pauseButton {
+  width: 80px;
+  margin-right: 10px;
+}
+
+#countdownDisplay,
+#countupDisplay {
   margin-top: 20px;
   margin-bottom: 20px;
   font-size: 25px;
