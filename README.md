@@ -14,7 +14,7 @@ ChillAppz is a simple and practical application designed to help you safely stor
 
 ## User Story
 
-**As a** forgetful cold drink enthusiant ~one with thirst, ~
+**As a** forgetful cold drink enthusiast ~one with thirst,~
 
 **I want** to not forget my drink in the icebox ~to have a timer to make my drink cold,~ 
 
