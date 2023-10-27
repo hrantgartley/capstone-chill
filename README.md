@@ -14,7 +14,11 @@ ChillAppz is a simple and practical application designed to help you safely stor
 
 ## User Story
 
-As one with thirst, I want to have a timer to make my drink cold, ensuring that it reaches the perfect chill level without exploding.
+**As a** forgetful cold drink enthusiant ~one with thirst, ~
+
+**I want** to not forget my drink in the icebox ~to have a timer to make my drink cold,~ 
+
+**so that** I havea a non-exploded, perfectly chilled drink ~ensuring that it reaches the perfect chill level without exploding.~
 
 ## Getting Started
 
