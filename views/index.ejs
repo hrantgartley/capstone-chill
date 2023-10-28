@@ -162,6 +162,11 @@
           separateTimerInterval = setInterval(() => {
             separateTimerDisplay.innerHTML = `-${timeSinceZero}s`;
             timeSinceZero++;
+
+            // Send an email alert when the timer hits 0
+            if (timeSinceZero === 0) {
+              sendEmailAlert("chillappzzz@gmail.com", "Timer Alert", "Your timer has reached 0.");
+            }
           }, 1000);
 
           isSecondaryTimerRunning = true;
