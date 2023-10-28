@@ -6,6 +6,7 @@ const { ObjectId } = require("mongodb");
 const port = process.env.PORT || 5500;
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri = process.env.MONGO_URI;
+const sendEmailAlert = require("./email");
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
