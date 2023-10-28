@@ -5,7 +5,7 @@ const transporter = nodemailer.createTransport({
     service: "elasticemail",
     auth: {
         user: "chillappz@chill.com",
-        pass: "SafePWD1",
+        pass: "here it would be",
     },
 });
 
