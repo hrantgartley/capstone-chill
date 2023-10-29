@@ -29,7 +29,7 @@ async function run() {
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!",
+      "Pinged your deployment. You successfully connected to MongoDB!"
     );
   } finally {
     // Ensures that the client will close when you finish/error
@@ -58,10 +58,13 @@ app.get("/", async (req, res) => {
     .find()
     .toArray();
   // console.log("get/: ", result);
-  console.log(mongoResult);
+
+  // console.log(mongoResult);
+
   // ('res.send("here for a second: " + result[0].name)');
   res.render("index", {
     drinkOptions: mongoResult,
+    selectedFreezingTime: 0,
   });
 });
 
@@ -84,6 +87,45 @@ app.post("/addCustomDrink", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send("An error occurred while adding the custom drink.");
+  }
+});
+
+app.post("/selectDrink", async (req, res) => {
+  try {
+    const selectedDrink = req.body.selectedDrink;
+    console.log("selectedDrink:", selectedDrink);
+
+    if (selectedDrink === "select") {
+      return res.status(400).send("Please select a drink.");
+    }
+
+    // Assuming you have a MongoDB collection named "drinks"
+    const collection = client.db("quebec-database").collection("drinks");
+
+    // Find the selected drink's freezing time
+    const drink = await collection.findOne({ drinkName: selectedDrink });
+    console.log("drink:", drink);
+
+    if (drink) {
+      // Get the freezing time of the selected drink
+      const freezingTime = drink.freezingTime;
+
+      // Get the drink options
+      let mongoResult = await collection.find().toArray();
+      // console.log(mongoResult);
+
+      // Send the freezing time as a response
+      res.render("index", {
+        drinkOptions: mongoResult,
+        selectedFreezingTime: freezingTime,
+      });
+    } else {
+      // Handle the case where the drink is not found
+      res.status(404).send("Selected drink not found in the database.");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("An error occurred while processing the request.");
   }
 });
 
@@ -148,5 +190,5 @@ app.post("/addCustomDrink", async (req, res) => {
 // });
 
 app.listen(port, () =>
-  console.log(`Server is running...on http://localhost:${port}`),
+  console.log(`Server is running...on http://localhost:${port}`)
 );
