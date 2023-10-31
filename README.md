@@ -27,7 +27,7 @@ ChillAppz is a simple and practical application designed to help you safely stor
 ChillAppz is a user-friendly web application, so there is no need to install any software on your device. Simply follow these steps:
 
 1. Open your preferred web browser.
-2. Visit our website.
+2. Visit our website at [here](https://chill-appz.onrender.com/)
 
 ### Usage
 
