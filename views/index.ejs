@@ -109,5 +109,84 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="/ui-control.js"></script>
     <script src="/timer.js"></script>
+    
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const timerForm = document.getElementById("timerForm");
+    const timerInput = document.getElementById("timerInput");
+    const startTimerButton = document.getElementById("startTimer");
+    const timerDisplay = document.getElementById("timerDisplay");
+    const stopTimerButton = document.getElementById("stopTimer");
+    const separateTimerDisplay = document.getElementById("separateTimerDisplay");
+
+    let timerInterval;
+    let separateTimerInterval;
+    let remainingTime = 0;
+    let isCountingDown = false;
+    let isSecondaryTimerRunning = false;
+
+    startTimerButton.addEventListener("click", function () {
+      const timeInMinutes = parseInt(timerInput.value);
+
+      if (!isNaN(timeInMinutes) && timeInMinutes > 0) {
+        remainingTime = timeInMinutes * 60;
+        clearInterval(timerInterval);
+        isCountingDown = true;
+
+        // Reset the secondary timer immediately
+        separateTimerDisplay.innerHTML = "0s";
+        isSecondaryTimerRunning = false;
+
+        // Update the timer every second
+        timerInterval = setInterval(updateTimer, 1000);
+        updateTimer();
+      }
+    });
+
+    stopTimerButton.addEventListener("click", function () {
+      clearInterval(timerInterval);
+      isCountingDown = false;
+
+      if (isSecondaryTimerRunning) {
+        clearInterval(separateTimerInterval);
+        isSecondaryTimerRunning = false;
+      }
+    });
+
+    function updateTimer() {
+      if (remainingTime <= 0) {
+        if (isCountingDown) {
+          // Timer reached 0, start counting into negatives
+          timerDisplay.innerHTML = "Time's up!";
+          let timeSinceZero = 0;
+
+          separateTimerDisplay.innerHTML = "0s"; // Reset the secondary timer immediately
+          isSecondaryTimerRunning = false;
+
+          separateTimerInterval = setInterval(() => {
+            separateTimerDisplay.innerHTML = `-${timeSinceZero}s`;
+            timeSinceZero++;
+
+            // Send an email alert when the timer hits 0
+            if (timeSinceZero === 0) {
+              sendEmailAlert("chillappzzz@gmail.com", "Timer Alert", "Your timer has reached 0.");
+            }
+          }, 1000);
+
+          isSecondaryTimerRunning = true;
+          clearInterval(timerInterval);
+        }
+      } else {
+        const seconds = Math.abs(remainingTime);
+        timerDisplay.innerHTML = `${remainingTime < 0 ? "-" : ""}${seconds}s`;
+        remainingTime--;
+      }
+    }
+  });
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+
+</script>
   </body>
 </html>
+
+
