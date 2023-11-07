@@ -1,30 +1,24 @@
 const nodemailer = require("nodemailer");
+require("dotenv").config();
 
-// Create a transporter using your email service's SMTP settings
-const transporter = nodemailer.createTransport({
-    service: "elasticemail",
+let transporter = nodemailer.createTransport({
+    service: "gmail",
     auth: {
-        user: "chillappz@chill.com",
-        pass: "here it would be",
+        user: process.env.grant_email,
+        pass: process.env.grant_pass,
     },
 });
 
-// Function to send an email alert
-const sendEmailAlert = (to, subject, text) => {
-    const mailOptions = {
-        from: "chillappz@chill.com",
-        to,
-        subject,
-        text,
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error("Error sending email:", error);
-        } else {
-            console.log("Email sent:", info.response);
-        }
-    });
+var mailOptions = {
+    from: process.env.grant_email,
+    to: process.env.grant_email,
+    text: "Test email",
 };
 
-module.exports = sendEmailAlert;
+transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+        console.log(error);
+    } else {
+        console.log("Email sent: " + info.response);
+    }
+});
