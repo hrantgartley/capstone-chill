@@ -22,6 +22,7 @@ const client = new MongoClient(uri, {
     },
 });
 
+
 app.get("/", async (req, res) => {
     client.connect;
     let mongoResult = await client
@@ -35,6 +36,7 @@ app.get("/", async (req, res) => {
     res.render("index", {
         drinkOptions: mongoResult,
     });
+
 });
 
 app.post("/addCustomDrink", async (req, res) => {
@@ -64,6 +66,46 @@ app.post("/addCustomDrink", async (req, res) => {
     }
 });
 
+app.post("/selectDrink", async (req, res) => {
+  try {
+    const selectedDrink = req.body.selectedDrink;
+    console.log("selectedDrink:", selectedDrink);
+
+    if (selectedDrink === "select") {
+      return res.status(400).send("Please select a drink.");
+    }
+
+    // Assuming you have a MongoDB collection named "drinks"
+    const collection = client.db("quebec-database").collection("drinks");
+
+    // Find the selected drink's freezing time
+    const drink = await collection.findOne({ drinkName: selectedDrink });
+    console.log("drink:", drink);
+
+    if (drink) {
+      // Get the freezing time of the selected drink
+      const freezingTime = drink.freezingTime;
+
+      // Get the drink options
+      let mongoResult = await collection.find().toArray();
+      // console.log(mongoResult);
+
+      // Send the freezing time as a response
+      res.render("index", {
+        drinkOptions: mongoResult,
+        selectedFreezingTime: freezingTime,
+      });
+    } else {
+      // Handle the case where the drink is not found
+      res.status(404).send("Selected drink not found in the database.");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("An error occurred while processing the request.");
+  }
+});
+
+
 app.get("/mail", (req, res) => {
     var transporter = nodemailer.createTransport({
         service: "gmail",
@@ -89,4 +131,7 @@ app.get("/mail", (req, res) => {
 
 app.listen(port, () =>
     console.log(`Server is running...on http://localhost:${port}`),
+
+         
+
 );

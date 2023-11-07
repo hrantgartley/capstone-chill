@@ -1,111 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ChillAppz - Freezer Drink Timer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <title>ChillAppz - Freezer Drink Timer</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="/style.css" />
-</head>
+  <body>
+    <div class="context">
+      <div class="container">
+        <div class="row header">
+          <div class="col-md-12"></div>
+          <h1>ChillAppz - Freezer Drink Timer</h1>
+        </div>
 
-<body class="container-fluid">
-  <div class="row">
-    <div class="col-md-12">
-      <h1>ChillAppz - Freezer Drink Timer</h1>
-      <h2>Are you thirsty? Select a Drink</h2>
-      <form action="/selectDrink" method="POST">
-        <select id="selectedDrink" name="selectedDrink">
-          <option value="select">Select a Drink</option>
-          <% for (let i=0; i < drinkOptions.length; i++) { %>
-            <option value="<%= drinkOptions[i].drinkName %>">
-              <%= drinkOptions[i].drinkName %>
-            </option>
-            <% } %>
-              <option value="Custom">Custom</option>
-        </select>
-        <button type="submit">Select Drink</button>
-      </form>
-    </div>
-
-    <div class="col-md-12">
-      <h2>Add Your Custom Drink</h2>
-      <form action="/addCustomDrink" method="POST">
-        <input type="text" id="customDrinkName" name="customDrinkName" placeholder="Enter the drink name" />
-        <button type="submit">Add Custom Drink</button>
-      </form>
-    </div>
-
-    <div class="col-md-12">
-      <h2>Set Freezing Time</h2>
-      <form action="/setFreezingTime" method="POST">
-        <input type="text" id="freezingTime" name="freezingTime" placeholder="Enter freezing time (minutes)" />
-        <button type="submit">Set Freezing Time</button>
-      </form>
-    </div>
-
-    <div class="col-md-12">
-      <h2>Set Timer</h2>
-      <form id="timerForm">
-        <input type="number" id="timerInput" placeholder="Enter time (minutes)" />
-        <button type="button" id="startTimer">Start Timer</button>
-        <button type="button" id="stopTimer">Stop Timer</button>
-      </form>
-      <div id="timerDisplay"></div>
-    </div>
-    <div class="col-md-12">
-      <div id="separateTimerDisplay">0s</div>
-    </div>
-
-
-
-    <!-- <div class="col-md-12">
-        <h1>Update Ice Cream Flavor</h1>
-        <ul>
-          <% for (var i=0; i< drinkOptions.length; i++ ) { %>
-          <li>
-            <form method="POST">
-              <input
-                type="hidden"
-                id="devId"
-                name="devId"
-                value="<%= drinkOptions[i]._id %>"
-              />
+        <div class="row">
+          <div class="col-md-6 select-drink-section mx-auto">
+            <h2>Are you thirsty? Select a Drink</h2>
+            <form action="/selectDrink" method="POST">
+              <select id="selectedDrink" name="selectedDrink" class="drinkList">
+                <option value="select">Select a Drink</option>
+                <% for (let i=0; i < drinkOptions.length; i++) { %>
+                <option value="<%= drinkOptions[i].drinkName %>">
+                  <%= drinkOptions[i].drinkName %>
+                </option>
+                <% } %>
+                <option value="Custom">Custom</option>
+              </select>
               <input
                 type="text"
-                id="devName"
-                name="devName"
-                value="<%= drinkOptions[i].name %>"
+                id="filterText"
+                placeholder="Filter drinks by first letter"
               />
-              <button type="submit" formaction="/updateProfile">
-                Update Flavor
-              </button>
-              <button type="submit" formaction="/deleteProfile">
-                Delete Flavor
-              </button>
+              <button type="submit">Select Drink</button>
             </form>
-          </li>
-          <% } %>
-        </ul>
+          </div>
+
+          <div class="col-md-6 custom-drink-section mx-auto">
+            <h2>Don't have your favorite drink? Add Your Custom Drink</h2>
+            <form action="/addCustomDrink" method="POST">
+              <input
+                type="text"
+                id="customDrinkName"
+                name="customDrinkName"
+                placeholder="Enter the drink name"
+              />
+              <button type="submit">Add Custom Drink</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 set-freezing-time-section mx-auto">
+            <h2>Set Freezing Time</h2>
+            <form action="/setFreezingTime" method="POST">
+              <input
+                type="text"
+                id="freezingTime"
+                name="freezingTime"
+                placeholder="Enter freezing time (minutes)"
+              />
+              <button type="submit">Set Freezing Time</button>
+            </form>
+          </div>
+
+          <div class="col-md-6 set-timer-section mx-auto">
+            <h2>Set Timer</h2>
+            <form id="timerForm">
+              <input
+                type="number"
+                id="timeInput"
+                placeholder="Enter time (minutes)"
+                value="<%= selectedFreezingTime || '' %>"
+              />
+              <button type="button" id="startButton">Start</button>
+              <button type="button" id="pauseButton" disabled>Pause</button>
+            </form>
+            <div id="countdownDisplay">0:00</div>
+            <div id="countupDisplay"></div>
+          </div>
+        </div>
       </div>
-
-      <div class="col-md-12">
-        <h2>New flavor here</h2>
-        <form action="/insertProfile" method="POST">
-          <input
-            type="text"
-            id="newDevName"
-            name="newDevName"
-            placeholder="New flavor goes here"
-          />
-          <button type="submit">Insert New Flavor</button>
-        </form>
-      </div> -->
-  </div>
-</body>
-
-</html>
+    </div>
+    <div class="area">
+      <ul class="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="/ui-control.js"></script>
+    <script src="/timer.js"></script>
+    
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const timerForm = document.getElementById("timerForm");
@@ -179,6 +183,10 @@
       }
     }
   });
-
+ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
 
 </script>
+  </body>
+</html>
+
+
