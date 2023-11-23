@@ -85,8 +85,8 @@ app.post("/selectDrink", async (req, res) => {
     const selectedDrink = req.body.selectedDrink;
     // console.log("selectedDrink:", selectedDrink);
 
-    if (selectedDrink === "select") {
-      return res.status(400).send("Please select a drink.");
+    if (!selectedDrink || selectedDrink.trim() === "") {
+      return res.status(400).send("Please enter the name of a drink.");
     }
 
     // Assuming you have a MongoDB collection named "drinks"

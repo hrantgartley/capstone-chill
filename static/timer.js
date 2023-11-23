@@ -79,19 +79,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Set background color based on remaining time
         document.querySelector(".area").style.backgroundColor = "#4e54c8";
-        document.body.style.backgroundColor = "#4e54c8";
+        document.documentElement.style.backgroundColor = "#4e54c8";
 
         const minutes = parseInt(minutesInput.value);
         const seconds = parseInt(secondsInput.value);
 
         if (remainingTime <= (minutes * 60 + seconds) / 2) {
           document.querySelector(".area").style.backgroundColor = "#c8c04e";
-          document.body.style.backgroundColor = "#c8c04e";
+          document.documentElement.style.backgroundColor = "#c8c04e";
         }
 
         if (remainingTime <= 10) {
           document.querySelector(".area").style.backgroundColor = "#c84e4e";
-          document.body.style.backgroundColor = "#c84e4e";
+          document.documentElement.style.backgroundColor = "#c84e4e";
         }
 
         remainingTime--;
