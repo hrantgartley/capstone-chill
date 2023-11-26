@@ -29,7 +29,15 @@ app.get("/", async (req, res) => {
   const selectedDrink = req.query.selectedDrink;
   const minutes = req.query.selectedFreezingMinute;
   const seconds = req.query.selectedFreezingSecond;
-
+  function getDrinkImagePath(drinkName) {
+    switch (drinkName) {
+      case "Cola":
+        return "https://m.media-amazon.com/images/I/61YxXvXo8QL.jpg";
+      // Add more cases for other drinks as needed
+      default:
+        return ""; // Default image path or handle accordingly
+    }
+  }
   let mongoResult = await client
     .db("quebec-database")
     .collection("drinks")
@@ -40,6 +48,7 @@ app.get("/", async (req, res) => {
     selectedDrink: selectedDrink,
     selectedFreezingMinute: minutes,
     selectedFreezingSecond: seconds,
+    getDrinkImagePath: getDrinkImagePath,
   });
 });
 
@@ -110,9 +119,9 @@ app.post("/selectDrink", async (req, res) => {
       // Set redirect path and query parameters
       const redirectToPath = "/";
       const redirectToQuery = `?selectedDrink=${encodeURIComponent(
-        selectedDrink
+        selectedDrink,
       )}&selectedFreezingMinute=${encodeURIComponent(
-        minutes
+        minutes,
       )}&selectedFreezingSecond=${encodeURIComponent(seconds)}`;
 
       // redirect
@@ -151,5 +160,5 @@ app.get("/mail", (req, res) => {
 });
 
 app.listen(port, () =>
-  console.log(`Server is running...on http://localhost:${port}`)
+  console.log(`Server is running...on http://localhost:${port}`),
 );
