@@ -8,17 +8,17 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/style.css" />
-  <script>
+  <!-- <script>
     function getDrinkImagePath(drinkName) {
       switch (drinkName) {
         case 'Cola':
-          return 'https://m.media-amazon.com/images/I/61YxXvXo8QL.jpg';
+          return 'https://pngimg.com/uploads/cocacola/cocacola_PNG22.png';
         // Add more cases for other drinks as needed
         default:
           return ''; // Default image path or handle accordingly
       }
     }
-  </script>
+  </script> -->
 </head>
 
 <body>
@@ -41,7 +41,9 @@
               <% for (let i=0; i < drinkOptions.length; i++) { %>
                 <label class="drink-option">
                   <input type="radio" name="selectedDrink" value="<%= drinkOptions[i].drinkName %>">
-                  <img src="<%= getDrinkImagePath(drinkOptions[i].drinkName) %>" alt="<%= drinkOptions[i].drinkName %>">
+                  <img src="<%= getDrinkImagePath(drinkOptions[i].drinkName) %>" alt="<%= drinkOptions[i].drinkName %>"
+                    width="<%= getDrinkImagePath(drinkOptions[i].drinkName).width %>"
+                    height="<%= getDrinkImagePath(drinkOptions[i].drinkName).height %>">
                   <span>
                     <%= drinkOptions[i].drinkName %>
                   </span>
