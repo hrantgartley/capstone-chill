@@ -11,7 +11,7 @@ app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Provide static directory for frontend
-app.use(express.static("public"));
+app.use(express.static("static"));
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -32,10 +32,13 @@ app.get("/", async (req, res) => {
   function getDrinkImagePath(drinkName) {
     switch (drinkName) {
       case "Cola":
-        return "https://m.media-amazon.com/images/I/61YxXvXo8QL.jpg";
-      // Add more cases for other drinks as needed
+        return "https://pngimg.com/uploads/cocacola/cocacola_PNG22.png";
+
+      case "Slurpee":
+        return "https://e7.pngegg.com/pngimages/472/727/png-clipart-slurpee-7-eleven-fizzy-drinks-convenience-shop-faygo-slurpee-food-cocktail.png";
+
       default:
-        return ""; // Default image path or handle accordingly
+        return "";
     }
   }
   let mongoResult = await client
