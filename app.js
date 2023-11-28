@@ -138,8 +138,8 @@ app.get("/mail", (req, res) => {
 
   var mailOptions = {
     from: process.env.grant_email,
-    to: process.env.grant_email,
-    text: "Test email",
+    to: process.env.phone,
+    text: "Your drink is sufficiently cold",
   };
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
