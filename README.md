@@ -31,9 +31,9 @@ ChillAppz is a user-friendly web application, so there is no need to install any
 
 ### Usage
 
-1. **Select Your Drink:** On the ChillAppz homepage, choose the type of drink you want to store in the freezer. You can select from a variety of options such as soda, beer, wine, or custom.
+1. **Select Your Drink:** On the ChillAppz homepage, choose the type of drink you want to store in the freezer. You can select from a variety of options.
 
-2. **Custom Freezing Time:** If you have a specific time in mind or a unique drink, you can input the desired freezing time. ChillAppz will calculate the maximum safe duration for your drink based on its properties.
+2. **Custom Freezing Time:** If you have a specific time in mind or a unique drink, you can input the desired freezing time. ChillAppz will recommend the maximum safe duration for your drink.
 
 3. **Start Timer:** Click the "Start Timer" button, and ChillAppz will begin counting down. You will receive a text message when it's time to retrieve your drink from the freezer.
 
@@ -42,7 +42,7 @@ ChillAppz is a user-friendly web application, so there is no need to install any
 ## Features
 
 - User-friendly interface for easy drink selection and customization.
-- Accurate calculation of the safe freezing duration based on drink type.
+- Accurate time for safe freezing duration based on drink type.
 - Custom input option for unique or special drinks.
 - Timely notifications to retrieve your drink from the freezer.
 - Prevents damage to drinks and the mess of exploded bottles.
