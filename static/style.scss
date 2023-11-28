@@ -14,17 +14,15 @@ html {
   h1 {
     font-size: 28px;
     margin-top: 20px;
-    margin-bottom: 20px;
     font-weight: bold;
   }
 }
 /* Styling for each section */
 .col-md-6 {
-  margin-bottom: 20px;
+  margin-top: 25px;
 
   h2 {
     font-size: 25px;
-    margin-top: 20px;
     color: #fff;
   }
 }
@@ -102,9 +100,21 @@ button[disabled] {
 
 .time-header {
   p {
-    font-size: 20px;
+    font-size: 25px;
     color: #fff;
     margin-bottom: 8px;
+  }
+}
+
+.custom-container {
+  display: flex;
+  align-items: center;
+  .custom-message {
+    margin-top: 1rem;
+    color: #fff;
+  }
+  .custom-button {
+    margin-left: 1rem;
   }
 }
 

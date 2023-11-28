@@ -36,26 +36,30 @@
             <form action="/selectDrink" method="POST">
               <input
                 type="text"
-                id="filterText"
+                id="selectedDrink"
+                name="selectedDrink"
                 placeholder="Enter the name of the drink you want to freeze"
+                list="drinkOptions"
               />
-              <select id="selectedDrink" name="selectedDrink" class="drinkList">
-                <option value="select">Select a Drink</option>
+              <datalist id="drinkOptions">
                 <% for (let i=0; i < drinkOptions.length; i++) { %>
                 <option value="<%= drinkOptions[i].drinkName %>">
-                  <%= drinkOptions[i].drinkName %>
+                  <% } %>
                 </option>
-                <% } %>
-                <option value="Custom">Custom</option>
-              </select>
+              </datalist>
+
               <button type="submit">Select Drink</button>
             </form>
+            <div class="custom-container">
+              <p class="custom-message">Don't have your favorite drink?</p>
+              <button class="custom-button">Add Your Custom Drink</button>
+            </div>
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-6 custom-drink-section mx-auto">
-            <h2>Don't have your favorite drink? Add Your Custom Drink</h2>
+            <h2>Add Your Custom Drink</h2>
             <form action="/addCustomDrink" method="POST">
               <div class="custome-container">
                 <input
