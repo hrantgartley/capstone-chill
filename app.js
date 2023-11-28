@@ -37,8 +37,11 @@ app.get("/", async (req, res) => {
       case "Slurpee":
         return "https://e7.pngegg.com/pngimages/472/727/png-clipart-slurpee-7-eleven-fizzy-drinks-convenience-shop-faygo-slurpee-food-cocktail.png";
 
+      case "Grape Juice":
+        return "https://png.pngtree.com/element_our/20190529/ourlarge/pngtree-drink-fresh-air-grape-juice-plastic-cup-drink-free-material-image_1189104.jpg";
+
       default:
-        return "";
+        return "https://icon2.cleanpng.com/20180302/efe/kisspng-united-states-solo-cup-company-plastic-cup-red-sol-red-cup-5a996acc64b579.7321904015200037884125.jpg";
     }
   }
   let mongoResult = await client
