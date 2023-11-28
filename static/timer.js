@@ -74,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
         pauseButton.disabled = true;
         hasFinished = true;
         startCountup();
+        window.location.replace("/mail");
       } else {
         updateCountdownDisplay(remainingTime);
 
